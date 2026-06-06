@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- This is the main page of the Habit Tracker app. -->
-<!-- For now it is just a skeleton: a title, a heading, and one sample habit. -->
+<!-- It shows a title, a form to add habits, and the list of habits. -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,7 +16,20 @@
       <h1>Habit Tracker</h1>
       <p class="subtitle">Build good habits, one day at a time.</p>
 
-      <!-- This empty list is where JavaScript will place the sample habit. -->
+      <!-- This form lets the user type a habit name and add it. -->
+      <!-- We use a <form> so pressing Enter in the input also submits, -->
+      <!-- not just clicking the button. JavaScript handles the submit. -->
+      <form id="habit-form" class="habit-form">
+        <input
+          id="habit-input"
+          class="habit-input"
+          type="text"
+          placeholder="e.g. Drink water"
+        />
+        <button type="submit" class="add-button">Add</button>
+      </form>
+
+      <!-- This empty list is where JavaScript will place the habits. -->
       <!-- We give it an id so app.js can find it easily. -->
       <ul id="habit-list"></ul>
     </main>
