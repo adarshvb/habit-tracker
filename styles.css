@@ -1,0 +1,59 @@
+/* Styles for the Habit Tracker app. */
+/* The goal here is just to make the skeleton page look clean and intentional. */
+
+/* These rules apply to the whole page. */
+body {
+  /* A friendly, readable font with safe fallbacks if it isn't available. */
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  /* A soft background colour so the page doesn't look plain white. */
+  background-color: #f4f6fb;
+  color: #333;
+  margin: 0;
+  /* Give a little breathing room around the edges. */
+  padding: 40px 16px;
+}
+
+/* The centered box that holds all the content. */
+.container {
+  /* max-width keeps the text from stretching too wide on big screens. */
+  max-width: 480px;
+  /* "margin: 0 auto" centers the box horizontally. */
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  /* A gentle shadow lifts the card off the background. */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* The main heading at the top of the card. */
+h1 {
+  margin: 0;
+  color: #4a6cf7;
+  text-align: center;
+}
+
+/* The small line of text under the heading. */
+.subtitle {
+  text-align: center;
+  color: #777;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+/* The list that holds the habits. */
+#habit-list {
+  /* Remove the default bullet points and indentation. */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Each individual habit row. */
+#habit-list li {
+  background-color: #f4f6fb;
+  padding: 12px 16px;
+  border-radius: 8px;
+  /* Space between habit rows when there is more than one later on. */
+  margin-bottom: 8px;
+}
