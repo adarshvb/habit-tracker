@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- This is the main page of the Habit Tracker app. -->
+<!-- For now it is just a skeleton: a title, a heading, and one sample habit. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- This meta tag makes the page look right on phones as well as computers. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habit Tracker</title>
+    <!-- Load our styles. The <link> tag connects this page to styles.css. -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- This box keeps all the content centered and tidy in the middle of the page. -->
+    <main class="container">
+      <h1>Habit Tracker</h1>
+      <p class="subtitle">Build good habits, one day at a time.</p>
+
+      <!-- This empty list is where JavaScript will place the sample habit. -->
+      <!-- We give it an id so app.js can find it easily. -->
+      <ul id="habit-list"></ul>
+    </main>
+
+    <!-- Load our JavaScript LAST, after the page content exists, -->
+    <!-- so the script can find the elements above. -->
+    <script src="app.js"></script>
+  </body>
+</html>
