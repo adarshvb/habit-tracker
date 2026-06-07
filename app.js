@@ -8,13 +8,41 @@ console.log("Habit Tracker app loaded.");
 // Each habit is an object shaped like { id, name, completedDates: [] }.
 // We only show "name" for now, but later tickets will use "completedDates"
 // to track which days a habit was done, so we set up the shape now.
-// We start with an empty array so the page begins with no habits.
+// We start with an empty array, but loadHabits() below fills it from
+// localStorage so habits added in a previous visit come back after a reload.
 let habits = [];
 
 // Find the elements in index.html that we need to work with.
 const habitForm = document.getElementById("habit-form");
 const habitInput = document.getElementById("habit-input");
 const habitList = document.getElementById("habit-list");
+
+// Save the current habits array to the browser's localStorage.
+// localStorage can only store text, so we turn the array into a JSON string.
+// We use the key "habits" so loadHabits() can find it again later.
+function saveHabits() {
+  localStorage.setItem("habits", JSON.stringify(habits));
+}
+
+// Read the saved habits back out of localStorage and return them as an array.
+// If nothing has been saved yet, or if the saved value is somehow broken,
+// we return an empty array so the app still starts cleanly instead of crashing.
+// The try/catch protects us in case JSON.parse chokes on a corrupt value.
+function loadHabits() {
+  const stored = localStorage.getItem("habits");
+
+  // Nothing saved yet (first ever visit): just start with no habits.
+  if (stored === null) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(stored);
+  } catch (error) {
+    // The saved text wasn't valid JSON, so ignore it and start fresh.
+    return [];
+  }
+}
 
 // Rebuild the whole list on the page from our "habits" array.
 // Rebuilding everything from scratch is simple and keeps the page in sync
@@ -62,6 +90,9 @@ habitForm.addEventListener("submit", function (event) {
   };
   habits.push(newHabit);
 
+  // Save the updated list so this habit survives a page reload.
+  saveHabits();
+
   // Clear the input so it's ready for the next habit.
   habitInput.value = "";
 
@@ -69,5 +100,7 @@ habitForm.addEventListener("submit", function (event) {
   renderHabits();
 });
 
-// Draw the list once when the page first loads (shows the empty-state message).
+// When the page first loads, fill the habits array from localStorage
+// (so previously added habits come back), then draw the list.
+habits = loadHabits();
 renderHabits();
