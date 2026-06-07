@@ -44,6 +44,48 @@ function loadHabits() {
   }
 }
 
+// Give today's date back as a "YYYY-MM-DD" text string (e.g. "2026-06-07").
+// We build it from the LOCAL date parts on purpose. A tempting shortcut is
+// new Date().toISOString(), but that uses UTC time, so late at night it can
+// report tomorrow's (or yesterday's) date and mark the wrong day as done.
+// padStart(2, "0") adds a leading zero so months/days are always two digits.
+function getTodayString() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // getMonth() is 0-11, so +1.
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Toggle whether the given habit is marked done for today.
+// If today's date is already in the habit's completedDates we remove it
+// (un-done it); if it isn't there yet we add it (mark it done).
+// Afterwards we save so the change survives a reload, and re-render so the
+// control on the page updates to match.
+function toggleToday(habitId) {
+  // Find the habit object that matches the id we were given.
+  const habit = habits.find((h) => h.id === habitId);
+  // If we somehow can't find it, do nothing rather than crash.
+  if (!habit) {
+    return;
+  }
+
+  const today = getTodayString();
+  const index = habit.completedDates.indexOf(today);
+
+  if (index === -1) {
+    // Today isn't in the list yet, so mark it done by adding it.
+    habit.completedDates.push(today);
+  } else {
+    // Today is already in the list, so un-mark it by removing it.
+    habit.completedDates.splice(index, 1);
+  }
+
+  // Save the change, then redraw so the control shows the new state.
+  saveHabits();
+  renderHabits();
+}
+
 // Rebuild the whole list on the page from our "habits" array.
 // Rebuilding everything from scratch is simple and keeps the page in sync
 // with the array: whatever is in the array is exactly what gets shown.
@@ -60,10 +102,39 @@ function renderHabits() {
     return;
   }
 
-  // Otherwise, make one list item for each habit and show its name.
+  // Work out today's date once so we can check each habit against it.
+  const today = getTodayString();
+
+  // Otherwise, make one list item for each habit and show its name
+  // alongside a "Done today" button that toggles today's completion.
   for (const habit of habits) {
     const item = document.createElement("li");
-    item.textContent = habit.name;
+
+    // Show the habit's name in its own element so it sits neatly
+    // next to the button rather than getting mixed in with it.
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "habit-name";
+    nameSpan.textContent = habit.name;
+    item.appendChild(nameSpan);
+
+    // Is today already marked done for this habit?
+    const isDoneToday = habit.completedDates.includes(today);
+
+    // Build the "Done today" button. Its text and CSS class change based on
+    // whether today is done, so the state is visually obvious at a glance.
+    const doneButton = document.createElement("button");
+    doneButton.type = "button";
+    doneButton.className = isDoneToday ? "done-button is-done" : "done-button";
+    doneButton.textContent = isDoneToday ? "Done today ✓" : "Done today";
+    // aria-pressed tells screen readers whether this toggle is currently on.
+    doneButton.setAttribute("aria-pressed", isDoneToday ? "true" : "false");
+
+    // When clicked, flip today's done-state for this specific habit.
+    doneButton.addEventListener("click", function () {
+      toggleToday(habit.id);
+    });
+
+    item.appendChild(doneButton);
     habitList.appendChild(item);
   }
 }
