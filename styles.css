@@ -102,4 +102,49 @@ h1 {
   border-radius: 8px;
   /* Space between habit rows when there is more than one later on. */
   margin-bottom: 8px;
+  /* "flex" puts the habit name and its button on one row, with the
+     "space-between" pushing them to opposite ends and the button lined
+     up neatly down the right. align-items keeps them vertically centered. */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* The habit's name text inside each row. */
+.habit-name {
+  /* Let the name take up the leftover space so the button stays on the right. */
+  flex: 1;
+}
+
+/* The "Done today" button on each habit row, in its default (not done) state.
+   It's an outline button so it reads as "not done yet" until it's clicked. */
+.done-button {
+  /* Stop the text from wrapping so the button keeps a steady shape. */
+  white-space: nowrap;
+  padding: 6px 12px;
+  border: 1px solid #4a6cf7;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #4a6cf7;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* A faint blue wash on hover so it's clear the button is clickable. */
+.done-button:hover {
+  background-color: #eef1fe;
+}
+
+/* The "done" state: a filled green button so a completed habit stands out. */
+.done-button.is-done {
+  background-color: #2ca56b;
+  border-color: #2ca56b;
+  color: #ffffff;
+}
+
+/* A slightly darker green on hover while it's in the done state. */
+.done-button.is-done:hover {
+  background-color: #25885a;
 }
